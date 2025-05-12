@@ -31,7 +31,6 @@ def main():
     '''
 
     input_stream = InputStream(input_string)
-
     lexer = SeqDiagramsLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = SeqDiagramsParser(stream)
@@ -43,7 +42,11 @@ def main():
     print("\n=== Interpreter Output ===")
     walker = ParseTreeWalker()
     interpreter = SequenceDiagramInterpreter()
-    walker.walk(interpreter, tree)
+
+    try:
+        walker.walk(interpreter, tree)
+    except Exception as e:
+        print(f"\nInterpreter halted: {e}")
 
 if __name__ == "__main__":
     main()
