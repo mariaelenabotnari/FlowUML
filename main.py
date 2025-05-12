@@ -2,6 +2,8 @@ from antlr4 import *
 from SeqDiagramsLexer import SeqDiagramsLexer
 from SeqDiagramsParser import SeqDiagramsParser
 from antlr4.tree.Tree import TerminalNodeImpl
+from antlr4 import ParseTreeWalker
+from SeqDiagramsInterpreter import SequenceDiagramInterpreter  # Your custom listener
 
 def print_tree(tree, parser, indent="", is_last=True):
     if isinstance(tree, TerminalNodeImpl):
@@ -15,24 +17,33 @@ def print_tree(tree, parser, indent="", is_last=True):
             print_tree(child, parser, new_indent, i == len(children) - 1)
 
 def main():
-    input_string = """
+    input_string = '''
     sequence SeqDiagram {
-        actor User;
-        object Order : OrderService;
-        User -> Order : placeOrder <<create>>;
+        actor "User";
+        object "Order" : "OrderService";
+        "User" -> "Order" : "placeOrder" <<create>>;
+        "Order" --> "User" : "confirmation";
+        note "Order created successfully";
+        activate "Order";
+        deactivate "Order";
+        delete "Order";
     }
-    """
+    '''
 
     input_stream = InputStream(input_string)
 
     lexer = SeqDiagramsLexer(input_stream)
     stream = CommonTokenStream(lexer)
-
     parser = SeqDiagramsParser(stream)
-
     tree = parser.sequenceDiagram()
 
+    print("=== Parse Tree ===")
     print_tree(tree, parser)
+
+    print("\n=== Interpreter Output ===")
+    walker = ParseTreeWalker()
+    interpreter = SequenceDiagramInterpreter()
+    walker.walk(interpreter, tree)
 
 if __name__ == "__main__":
     main()
