@@ -1,0 +1,323 @@
+:root {
+    --primary-color: #435e8c;
+    --secondary-color: #2e3440;
+    --accent-color: #5e7d68;
+    --background-light: #f5f6f7;
+    --background-dark: #1d2026;
+    --text-color: #3b4252;
+    --border-color: #d8dee9;
+    --panel-header: #eceff4;
+    --panel-bg: #ffffff;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.brand-header {
+    background-color: var(--secondary-color);
+    color: #e5e9f0;
+    padding: 1.2rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.logo-icon {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e5e9f0;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+}
+
+.container {
+    max-width: 1400px;
+    padding: 0 1.5rem;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    height: calc(100vh - 180px);
+}
+
+.editor-panel, .preview-panel {
+    background: var(--panel-bg);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+}
+
+.panel-header {
+    background-color: var(--panel-header);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.panel-body {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+#dsl-editor {
+    width: 100%;
+    height: 100%;
+    border: none;
+    resize: none;
+    padding: 1rem;
+    padding-left: calc(1rem + 36px);
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--panel-bg);
+}
+
+#dsl-editor:focus {
+    outline: none;
+}
+
+.line-numbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    background-color: var(--panel-header);
+    border-right: 1px solid var(--border-color);
+    text-align: right;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 1rem 6px 1rem 0;
+    color: #8c929d;
+    overflow: hidden;
+    user-select: none;
+}
+
+#diagram-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: #f7f8f9;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    position: relative;
+}
+
+#diagram-image {
+    max-width: 98%;
+    max-height: 98%;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8c929d;
+    height: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+.placeholder-icon {
+    font-size: 40px;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+}
+
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn {
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #3a5279;
+    border-color: #3a5279;
+}
+
+.btn-outline {
+    color: var(--text-color);
+    border-color: var(--border-color);
+    background-color: white;
+}
+
+.btn-outline:hover {
+    background-color: #f0f1f3;
+    color: var(--primary-color);
+}
+
+.btn-success {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.btn-success:hover {
+    background-color: #516e59;
+    border-color: #516e59;
+}
+
+.footer {
+    text-align: center;
+    padding: 1rem 0;
+    color: #8c929d;
+    font-size: 0.875rem;
+}
+
+.error-message {
+    margin-top: 0;
+    padding: 1rem;
+    color: #b62323;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.875rem;
+    background-color: #fdf3f3;
+    border-top: 1px solid #efd7d7;
+    overflow-y: auto;
+    max-height: 120px;
+    white-space: pre-wrap;
+    display: none;
+}
+
+.loading-spinner {
+    display: none;
+    margin-right: 0.5rem;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f1f3;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a0aec0;
+}
+
+.tooltip-inner {
+    max-width: 200px;
+    padding: 5px 8px;
+    color: #eceff4;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.zoom-level {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-color);
+    min-width: 42px;
+    text-align: center;
+    user-select: none;
+}
+
+.diagram-wrapper {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.diagram-wrapper.zoomed-in {
+    cursor: grab;
+}
+
+.diagram-wrapper.zoomed-in:active {
+    cursor: grabbing;
+}
+
+@media (max-width: 992px) {
+    .workspace {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    
+    .editor-panel, .preview-panel {
+        height: 500px;
+    }
+    
+    .zoom-controls .btn {
+        padding: 0.25rem 0.4rem;
+    }
+    
+    .zoom-level {
+        min-width: 36px;
+        font-size: 0.75rem;
+    }
+} 
