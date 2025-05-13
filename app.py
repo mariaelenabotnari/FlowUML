@@ -91,6 +91,9 @@ def generate():
                 'error': "Semantic errors detected:\n" + "\n".join(interpreter.semantic_errors)
             })
         
+        # Make sure to call draw() on the visualizer to render the diagram
+        interpreter.visualizer.draw()
+        # Get the figure and save it
         fig = interpreter.visualizer.fig
         fig.savefig(img_data, format='png', bbox_inches='tight', dpi=120)
         img_data.seek(0)
