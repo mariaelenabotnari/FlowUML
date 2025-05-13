@@ -75,8 +75,11 @@ class SequenceDiagramVisualizer:
     def end_activation(self, participant):
         """End the latest activation for a participant"""
         if participant in self.activations and self.activations[participant]:
-            start_y, _ = self.activations[participant][-1]
-            self.activations[participant][-1][1] = self.current_y
+            # Only update the end point if it wasn't already set
+            if self.activations[participant][-1][1] is None:
+                self.activations[participant][-1][1] = self.current_y
+            return True
+        return False
 
     def add_note(self, text):
         """Add a note to the diagram"""
