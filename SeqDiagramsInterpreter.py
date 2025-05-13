@@ -1,141 +1,270 @@
 from SeqDiagramsListener import SeqDiagramsListener
 from SeqDiagramsParser import SeqDiagramsParser
+from SequenceDiagramVisualizer import SequenceDiagramVisualizer
 
 class SequenceDiagramInterpreter(SeqDiagramsListener):
     def __init__(self):
         self.defined_lifelines = set()
         self.semantic_errors = []
+        self.visualizer = SequenceDiagramVisualizer()
+        self.current_nesting_level = 0
+        self.active_lifelines = set()  # Track activated lifelines
 
     def _strip(self, token):
-        return token.getText().strip('"') if token else ""
+        if token and token.getText().startswith('"'):
+            return token.getText().strip('"')
+        return token.getText() if token else ""
 
     def _check_lifeline(self, name, ctx):
         if name not in self.defined_lifelines:
             self.semantic_errors.append(f"Semantic Error: Lifeline '{name}' used before declaration at line {ctx.start.line}.")
 
-    def enterSequenceDiagram(self, ctx: SeqDiagramsParser.SequenceDiagramContext):
-        name = self._strip(ctx.STRING())
-        print(f"\n>>> Sequence Diagram: {name}")
-
-    def enterActor(self, ctx: SeqDiagramsParser.ActorContext):
-        name = self._strip(ctx.STRING())
-        print(f"Actor: {name}")
-        self.defined_lifelines.add(name)
-
-    def enterObject(self, ctx: SeqDiagramsParser.ObjectContext):
-        obj_name = ctx.objectName().getText().replace(':', ': ')
-        print(f"Object: {obj_name}")
-        if hasattr(ctx.objectName(), "objectOnly"):
-            lifeline = self._strip(ctx.objectName().objectOnly().STRING())
-        elif hasattr(ctx.objectName(), "objectClass"):
-            lifeline = self._strip(ctx.objectName().objectClass().STRING(0))
+    # Sequence diagram
+    def enterSequenceDiagram(self, ctx):
+        if ctx.IDENTIFIER():
+            name = self._strip(ctx.IDENTIFIER())
+            print(f"[DEBUG] SequenceDiagram: {name}")
+            if name:
+                self.visualizer.set_title(name)
+        # Handle case where there is no title
         else:
-            lifeline = self._strip(ctx.objectName().getText().split(':')[0])
-        self.defined_lifelines.add(lifeline)
+            print(f"[DEBUG] SequenceDiagram without a name")
 
-    def enterBoundary(self, ctx: SeqDiagramsParser.BoundaryContext):
-        name = self._strip(ctx.STRING())
-        print(f"Boundary: {name}")
+    # Participant declarations
+    def enterActor(self, ctx):
+        name = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Actor: {name}")
         self.defined_lifelines.add(name)
+        self.visualizer.add_participant(name, "actor")
 
-    def enterControl(self, ctx: SeqDiagramsParser.ControlContext):
-        name = self._strip(ctx.STRING())
-        print(f"Control: {name}")
+    def enterObject(self, ctx):
+        # Handle different object name formats
+        object_name_ctx = ctx.objectName()
+        if object_name_ctx.objectOnly():
+            name = self._strip(object_name_ctx.objectOnly().IDENTIFIER())
+            class_type = "Object"
+        elif object_name_ctx.objectClass():
+            name = self._strip(object_name_ctx.objectClass().IDENTIFIER(0))
+            class_type = self._strip(object_name_ctx.objectClass().IDENTIFIER(1))
+        elif object_name_ctx.classOnly():
+            name = "AnonymousObject"
+            class_type = self._strip(object_name_ctx.classOnly().IDENTIFIER())
+        elif object_name_ctx.classPackage():
+            name = "AnonymousObject"
+            pkg = self._strip(object_name_ctx.classPackage().IDENTIFIER(0))
+            cls = self._strip(object_name_ctx.classPackage().IDENTIFIER(1))
+            class_type = f"{pkg}::{cls}"
+        elif object_name_ctx.objectClassPackage():
+            name = self._strip(object_name_ctx.objectClassPackage().IDENTIFIER(0))
+            pkg = self._strip(object_name_ctx.objectClassPackage().IDENTIFIER(1))
+            cls = self._strip(object_name_ctx.objectClassPackage().IDENTIFIER(2))
+            class_type = f"{pkg}::{cls}"
+        else:
+            name = "UnknownObject"
+            class_type = "Unknown"
+            
+        print(f"[DEBUG] Object: {name}, class: {class_type}")
         self.defined_lifelines.add(name)
-
-    def enterEntity(self, ctx: SeqDiagramsParser.EntityContext):
-        name = self._strip(ctx.STRING())
-        print(f"Entity: {name}")
+        self.visualizer.add_participant(name, "object")
+    
+    def enterBoundary(self, ctx):
+        name = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Boundary: {name}")
         self.defined_lifelines.add(name)
-
-    def enterDatabase(self, ctx: SeqDiagramsParser.DatabaseContext):
-        name = self._strip(ctx.STRING())
-        print(f"Database: {name}")
+        self.visualizer.add_participant(name, "boundary")
+        
+    def enterControl(self, ctx):
+        name = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Control: {name}")
         self.defined_lifelines.add(name)
+        self.visualizer.add_participant(name, "control")
+        
+    def enterEntity(self, ctx):
+        name = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Entity: {name}")
+        self.defined_lifelines.add(name)
+        self.visualizer.add_participant(name, "entity")
+        
+    def enterDatabase(self, ctx):
+        name = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Database: {name}")
+        self.defined_lifelines.add(name)
+        self.visualizer.add_participant(name, "database")
 
-    def enterSynchronous(self, ctx: SeqDiagramsParser.SynchronousContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+    # Message handling
+    def enterSynchronous(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Synchronous Message: {src} -> {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} -> {dst} : {msg}")
-
-    def enterAsynchronous(self, ctx: SeqDiagramsParser.AsynchronousContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+        
+        # Check if the message has a stereotype
+        msg_type = "->"
+        if ctx.synchronousStereo():
+            stereotype = self._strip(ctx.synchronousStereo().STEREOTYPE())
+            print(f"[DEBUG] Stereotype: {stereotype}")
+            if "create" in stereotype:
+                # Creation message
+                msg_type = "->>"
+                
+        self.visualizer.add_message(src, dst, display_msg, msg_type)
+    
+    def enterAsynchronous(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Asynchronous Message: {src} => {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} => {dst} : {msg}")
-
-    def enterReturnMessage(self, ctx: SeqDiagramsParser.ReturnMessageContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+        self.visualizer.add_message(src, dst, display_msg, "-->")
+        
+    def enterReturnMessage(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Return Message: {src} --> {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} <-- {dst} : {msg}")
-
-    def enterXsynchronous(self, ctx: SeqDiagramsParser.XsynchronousContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+        self.visualizer.add_message(src, dst, display_msg, "-->")
+    
+    def enterXsynchronous(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Destruction Message: {src} -x> {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} -x> {dst} : {msg}")
-
-    def enterTwoWayAsync(self, ctx: SeqDiagramsParser.TwoWayAsyncContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+        self.visualizer.add_message(src, dst, display_msg, "-x>")
+    
+    def enterTwoWayAsync(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Two-way Async: {src} <-> {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} <-> {dst} : {msg}")
-
-    def enterTimeout(self, ctx: SeqDiagramsParser.TimeoutContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+        self.visualizer.add_message(src, dst, display_msg, "<->")
+    
+    def enterTimeout(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Timeout Message: {src} -o> {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} -o> {dst} : {msg}")
-
-    def enterBulking(self, ctx: SeqDiagramsParser.BulkingContext):
-        src = self._strip(ctx.STRING(0))
-        dst = self._strip(ctx.STRING(1))
-        msg = self._strip(ctx.STRING(2))
+        self.visualizer.add_message(src, dst, display_msg, "-o>")
+        
+    def enterBulking(self, ctx):
+        src = self._strip(ctx.IDENTIFIER(0))
+        dst = self._strip(ctx.IDENTIFIER(1))
+        msg = self._strip(ctx.IDENTIFIER(2))
+        
+        # Transform underscores to spaces for display
+        display_msg = msg.replace('_', ' ')
+        
+        print(f"[DEBUG] Bulking Message: {src} |< {dst}: {display_msg}")
         self._check_lifeline(src, ctx)
         self._check_lifeline(dst, ctx)
-        print(f"{src} |< {dst} : {msg}")
-
-    def enterActivation(self, ctx: SeqDiagramsParser.ActivationContext):
-        participant = self._strip(ctx.STRING())
-        self._check_lifeline(participant, ctx)
-        print(f"activate {participant}")
-
-    def enterDeactivation(self, ctx: SeqDiagramsParser.DeactivationContext):
-        participant = self._strip(ctx.STRING())
-        self._check_lifeline(participant, ctx)
-        print(f"deactivate {participant}")
-
-    def enterNote(self, ctx: SeqDiagramsParser.NoteContext):
-        note = self._strip(ctx.STRING())
-        print(f"note: {note}")
-
-    def enterNewObject(self, ctx: SeqDiagramsParser.NewObjectContext):
-        obj = self._strip(ctx.STRING())
-        self.defined_lifelines.add(obj)
-        print(f"new {obj}")
-
-    def enterDeleteObject(self, ctx: SeqDiagramsParser.DeleteObjectContext):
-        obj = self._strip(ctx.STRING())
-        self._check_lifeline(obj, ctx)
-        print(f"delete {obj}")
-
-    def exitSequenceDiagram(self, ctx: SeqDiagramsParser.SequenceDiagramContext):
+        self.visualizer.add_message(src, dst, display_msg, "|<")
+    
+    # Control structures
+    def enterLoop(self, ctx):
+        condition = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Loop: {condition}")
+        self.current_nesting_level += 1
+        # Use the new control block visualization
+        self.visualizer.start_loop(condition)
+    
+    def exitLoop(self, ctx):
+        self.current_nesting_level -= 1
+        self.visualizer.end_loop()
+    
+    def enterConditional(self, ctx):
+        print(f"[DEBUG] Alt: conditional block")
+        self.current_nesting_level += 1
+        # Use the new control block visualization
+        self.visualizer.start_alt()
+    
+    def exitConditional(self, ctx):
+        self.current_nesting_level -= 1
+        self.visualizer.end_alt()
+    
+    def enterAltCase(self, ctx):
+        condition = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Case: {condition}")
+        # Use the new branch method
+        self.visualizer.add_alt_branch(condition)
+    
+    def enterOptional(self, ctx):
+        condition = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Optional: {condition}")
+        self.current_nesting_level += 1
+        # Use the new control block visualization
+        self.visualizer.start_opt(condition)
+    
+    def exitOptional(self, ctx):
+        self.current_nesting_level -= 1
+        self.visualizer.end_opt()
+    
+    def enterParallel(self, ctx):
+        print(f"[DEBUG] Parallel block")
+        self.current_nesting_level += 1
+        self.visualizer.add_note("Par: parallel execution")
+    
+    def exitParallel(self, ctx):
+        self.current_nesting_level -= 1
+    
+    # Activation/Deactivation
+    def enterActivation(self, ctx):
+        lifeline = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Activation: {lifeline}")
+        self._check_lifeline(lifeline, ctx)
+        self.active_lifelines.add(lifeline)
+        self.visualizer.add_activation(lifeline)
+    
+    def enterDeactivation(self, ctx):
+        lifeline = self._strip(ctx.IDENTIFIER())
+        print(f"[DEBUG] Deactivation: {lifeline}")
+        self._check_lifeline(lifeline, ctx)
+        if lifeline in self.active_lifelines:
+            self.active_lifelines.remove(lifeline)
+            self.visualizer.end_activation(lifeline)
+    
+    # Finish processing
+    def exitSequenceDiagram(self, ctx):
+        # Auto-end any remaining activations
+        for lifeline in list(self.active_lifelines):
+            self.visualizer.end_activation(lifeline)
+            
         if self.semantic_errors:
             print("\nErrors:")
             for err in self.semantic_errors:
                 print(err)
             raise Exception("Semantic validation failed.")
+        self.visualizer.save("sequence_diagram.png")

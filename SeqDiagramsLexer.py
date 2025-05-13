@@ -1,4 +1,4 @@
-# Generated from SeqDiagrams.g4 by ANTLR 4.13.2
+# Generated from SeqDiagrams.g4 by ANTLR 4.13.1
 from antlr4 import *
 from io import StringIO
 import sys
@@ -152,7 +152,7 @@ class SeqDiagramsLexer(Lexer):
     COLON = 31
     SEMI = 32
     DOUBLE_COLON = 33
-    STRING = 34
+    IDENTIFIER = 34
     WS = 35
     COMMENT = 36
 
@@ -173,21 +173,21 @@ class SeqDiagramsLexer(Lexer):
             "DELETE", "NOTE", "ACTIVATE", "DEACTIVATE", "ARROW", "ASYNC", 
             "RETURN", "XSYNC", "TWO_WAY_ASYNC", "TIMEOUT", "BULKING", "STEREOTYPE", 
             "LBRACE", "RBRACE", "LPAREN", "RPAREN", "COLON", "SEMI", "DOUBLE_COLON", 
-            "STRING", "WS", "COMMENT" ]
+            "IDENTIFIER", "WS", "COMMENT" ]
 
     ruleNames = [ "SEQUENCE", "ACTOR", "OBJECT", "BOUNDARY", "CONTROL", 
                   "ENTITY", "DATABASE", "FOR", "WHILE", "ALT", "CASE", "OPT", 
                   "PAR", "NEW", "DELETE", "NOTE", "ACTIVATE", "DEACTIVATE", 
                   "ARROW", "ASYNC", "RETURN", "XSYNC", "TWO_WAY_ASYNC", 
                   "TIMEOUT", "BULKING", "STEREOTYPE", "LBRACE", "RBRACE", 
-                  "LPAREN", "RPAREN", "COLON", "SEMI", "DOUBLE_COLON", "STRING", 
+                  "LPAREN", "RPAREN", "COLON", "SEMI", "DOUBLE_COLON", "IDENTIFIER", 
                   "WS", "COMMENT" ]
 
     grammarFileName = "SeqDiagrams.g4"
 
     def __init__(self, input=None, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.13.2")
+        self.checkVersion("4.13.1")
         self._interp = LexerATNSimulator(self, self.atn, self.decisionsToDFA, PredictionContextCache())
         self._actions = None
         self._predicates = None

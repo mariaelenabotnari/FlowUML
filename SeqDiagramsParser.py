@@ -1,4 +1,4 @@
-# Generated from SeqDiagrams.g4 by ANTLR 4.13.2
+# Generated from SeqDiagrams.g4 by ANTLR 4.13.1
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -161,7 +161,7 @@ class SeqDiagramsParser ( Parser ):
                       "DEACTIVATE", "ARROW", "ASYNC", "RETURN", "XSYNC", 
                       "TWO_WAY_ASYNC", "TIMEOUT", "BULKING", "STEREOTYPE", 
                       "LBRACE", "RBRACE", "LPAREN", "RPAREN", "COLON", "SEMI", 
-                      "DOUBLE_COLON", "STRING", "WS", "COMMENT" ]
+                      "DOUBLE_COLON", "IDENTIFIER", "WS", "COMMENT" ]
 
     RULE_sequenceDiagram = 0
     RULE_lifeline = 1
@@ -254,13 +254,13 @@ class SeqDiagramsParser ( Parser ):
     COLON=31
     SEMI=32
     DOUBLE_COLON=33
-    STRING=34
+    IDENTIFIER=34
     WS=35
     COMMENT=36
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.13.2")
+        self.checkVersion("4.13.1")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -277,8 +277,8 @@ class SeqDiagramsParser ( Parser ):
         def SEQUENCE(self):
             return self.getToken(SeqDiagramsParser.SEQUENCE, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def LBRACE(self):
             return self.getToken(SeqDiagramsParser.LBRACE, 0)
@@ -311,6 +311,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitSequenceDiagram" ):
                 listener.exitSequenceDiagram(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitSequenceDiagram" ):
+                return visitor.visitSequenceDiagram(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -324,7 +330,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 88
             self.match(SeqDiagramsParser.SEQUENCE)
             self.state = 89
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 90
             self.match(SeqDiagramsParser.LBRACE)
             self.state = 94
@@ -383,6 +389,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitLifeline" ):
                 listener.exitLifeline(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitLifeline" ):
+                return visitor.visitLifeline(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -452,6 +464,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitParticipant" ):
                 listener.exitParticipant(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParticipant" ):
+                return visitor.visitParticipant(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -517,8 +535,8 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_diagramName
@@ -531,6 +549,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitDiagramName" ):
                 listener.exitDiagramName(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDiagramName" ):
+                return visitor.visitDiagramName(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -541,7 +565,7 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 117
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -561,8 +585,8 @@ class SeqDiagramsParser ( Parser ):
         def ACTOR(self):
             return self.getToken(SeqDiagramsParser.ACTOR, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_actor
@@ -574,6 +598,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitActor" ):
                 listener.exitActor(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitActor" ):
+                return visitor.visitActor(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -587,7 +617,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 119
             self.match(SeqDiagramsParser.ACTOR)
             self.state = 120
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -622,6 +652,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitObject" ):
                 listener.exitObject(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitObject" ):
+                return visitor.visitObject(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -654,8 +690,8 @@ class SeqDiagramsParser ( Parser ):
         def BOUNDARY(self):
             return self.getToken(SeqDiagramsParser.BOUNDARY, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_boundary
@@ -667,6 +703,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitBoundary" ):
                 listener.exitBoundary(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBoundary" ):
+                return visitor.visitBoundary(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -680,7 +722,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 125
             self.match(SeqDiagramsParser.BOUNDARY)
             self.state = 126
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -700,8 +742,8 @@ class SeqDiagramsParser ( Parser ):
         def CONTROL(self):
             return self.getToken(SeqDiagramsParser.CONTROL, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_control
@@ -713,6 +755,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitControl" ):
                 listener.exitControl(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitControl" ):
+                return visitor.visitControl(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -726,7 +774,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 128
             self.match(SeqDiagramsParser.CONTROL)
             self.state = 129
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -746,8 +794,8 @@ class SeqDiagramsParser ( Parser ):
         def ENTITY(self):
             return self.getToken(SeqDiagramsParser.ENTITY, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_entity
@@ -759,6 +807,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitEntity" ):
                 listener.exitEntity(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitEntity" ):
+                return visitor.visitEntity(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -772,7 +826,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 131
             self.match(SeqDiagramsParser.ENTITY)
             self.state = 132
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -792,8 +846,8 @@ class SeqDiagramsParser ( Parser ):
         def DATABASE(self):
             return self.getToken(SeqDiagramsParser.DATABASE, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_database
@@ -805,6 +859,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitDatabase" ):
                 listener.exitDatabase(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDatabase" ):
+                return visitor.visitDatabase(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -818,7 +878,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 134
             self.match(SeqDiagramsParser.DATABASE)
             self.state = 135
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -865,6 +925,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitObjectName" ):
                 listener.exitObjectName(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitObjectName" ):
+                return visitor.visitObjectName(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -924,8 +990,8 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def COLON(self):
             return self.getToken(SeqDiagramsParser.COLON, 0)
@@ -941,6 +1007,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitObjectOnly" ):
                 listener.exitObjectOnly(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitObjectOnly" ):
+                return visitor.visitObjectOnly(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -952,7 +1024,7 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 144
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 146
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -977,11 +1049,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def COLON(self):
             return self.getToken(SeqDiagramsParser.COLON, 0)
@@ -997,6 +1069,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitObjectClass" ):
                 listener.exitObjectClass(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitObjectClass" ):
+                return visitor.visitObjectClass(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1007,11 +1085,11 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 148
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 149
             self.match(SeqDiagramsParser.COLON)
             self.state = 150
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1031,8 +1109,8 @@ class SeqDiagramsParser ( Parser ):
         def COLON(self):
             return self.getToken(SeqDiagramsParser.COLON, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
             return SeqDiagramsParser.RULE_classOnly
@@ -1044,6 +1122,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitClassOnly" ):
                 listener.exitClassOnly(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitClassOnly" ):
+                return visitor.visitClassOnly(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1057,7 +1141,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 152
             self.match(SeqDiagramsParser.COLON)
             self.state = 153
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1077,11 +1161,11 @@ class SeqDiagramsParser ( Parser ):
         def COLON(self):
             return self.getToken(SeqDiagramsParser.COLON, 0)
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def DOUBLE_COLON(self):
             return self.getToken(SeqDiagramsParser.DOUBLE_COLON, 0)
@@ -1097,6 +1181,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitClassPackage" ):
                 listener.exitClassPackage(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitClassPackage" ):
+                return visitor.visitClassPackage(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1109,11 +1199,11 @@ class SeqDiagramsParser ( Parser ):
             self.state = 155
             self.match(SeqDiagramsParser.COLON)
             self.state = 156
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 157
             self.match(SeqDiagramsParser.DOUBLE_COLON)
             self.state = 158
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1130,11 +1220,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def COLON(self):
             return self.getToken(SeqDiagramsParser.COLON, 0)
@@ -1153,6 +1243,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitObjectClassPackage" ):
                 listener.exitObjectClassPackage(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitObjectClassPackage" ):
+                return visitor.visitObjectClassPackage(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1163,15 +1259,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 160
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 161
             self.match(SeqDiagramsParser.COLON)
             self.state = 162
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 163
             self.match(SeqDiagramsParser.DOUBLE_COLON)
             self.state = 164
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1226,6 +1322,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitInteraction" ):
                 listener.exitInteraction(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitInteraction" ):
+                return visitor.visitInteraction(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -1336,6 +1438,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitMessage" ):
                 listener.exitMessage(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitMessage" ):
+                return visitor.visitMessage(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1406,11 +1514,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def ARROW(self):
             return self.getToken(SeqDiagramsParser.ARROW, 0)
@@ -1440,6 +1548,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitSynchronous" ):
                 listener.exitSynchronous(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitSynchronous" ):
+                return visitor.visitSynchronous(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1451,15 +1565,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 184
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 185
             self.match(SeqDiagramsParser.ARROW)
             self.state = 186
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 187
             self.match(SeqDiagramsParser.COLON)
             self.state = 188
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 190
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1494,11 +1608,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def ASYNC(self):
             return self.getToken(SeqDiagramsParser.ASYNC, 0)
@@ -1524,6 +1638,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitAsynchronous" ):
                 listener.exitAsynchronous(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAsynchronous" ):
+                return visitor.visitAsynchronous(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1535,15 +1655,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 197
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 198
             self.match(SeqDiagramsParser.ASYNC)
             self.state = 199
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 200
             self.match(SeqDiagramsParser.COLON)
             self.state = 201
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 203
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1570,11 +1690,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def RETURN(self):
             return self.getToken(SeqDiagramsParser.RETURN, 0)
@@ -1600,6 +1720,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitReturnMessage" ):
                 listener.exitReturnMessage(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitReturnMessage" ):
+                return visitor.visitReturnMessage(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1611,15 +1737,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 207
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 208
             self.match(SeqDiagramsParser.RETURN)
             self.state = 209
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 210
             self.match(SeqDiagramsParser.COLON)
             self.state = 211
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 213
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1646,11 +1772,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def XSYNC(self):
             return self.getToken(SeqDiagramsParser.XSYNC, 0)
@@ -1676,6 +1802,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitXsynchronous" ):
                 listener.exitXsynchronous(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitXsynchronous" ):
+                return visitor.visitXsynchronous(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1687,15 +1819,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 217
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 218
             self.match(SeqDiagramsParser.XSYNC)
             self.state = 219
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 220
             self.match(SeqDiagramsParser.COLON)
             self.state = 221
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 223
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1722,11 +1854,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def TWO_WAY_ASYNC(self):
             return self.getToken(SeqDiagramsParser.TWO_WAY_ASYNC, 0)
@@ -1752,6 +1884,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitTwoWayAsync" ):
                 listener.exitTwoWayAsync(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTwoWayAsync" ):
+                return visitor.visitTwoWayAsync(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1763,15 +1901,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 227
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 228
             self.match(SeqDiagramsParser.TWO_WAY_ASYNC)
             self.state = 229
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 230
             self.match(SeqDiagramsParser.COLON)
             self.state = 231
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 233
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1798,11 +1936,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def TIMEOUT(self):
             return self.getToken(SeqDiagramsParser.TIMEOUT, 0)
@@ -1828,6 +1966,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitTimeout" ):
                 listener.exitTimeout(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTimeout" ):
+                return visitor.visitTimeout(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1839,15 +1983,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 237
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 238
             self.match(SeqDiagramsParser.TIMEOUT)
             self.state = 239
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 240
             self.match(SeqDiagramsParser.COLON)
             self.state = 241
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 243
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1874,11 +2018,11 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def BULKING(self):
             return self.getToken(SeqDiagramsParser.BULKING, 0)
@@ -1904,6 +2048,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitBulking" ):
                 listener.exitBulking(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBulking" ):
+                return visitor.visitBulking(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -1915,15 +2065,15 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 247
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 248
             self.match(SeqDiagramsParser.BULKING)
             self.state = 249
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 250
             self.match(SeqDiagramsParser.COLON)
             self.state = 251
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 253
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -1956,8 +2106,8 @@ class SeqDiagramsParser ( Parser ):
         def LPAREN(self):
             return self.getToken(SeqDiagramsParser.LPAREN, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def RPAREN(self):
             return self.getToken(SeqDiagramsParser.RPAREN, 0)
@@ -1989,6 +2139,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitLoop" ):
                 listener.exitLoop(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitLoop" ):
+                return visitor.visitLoop(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2008,7 +2164,7 @@ class SeqDiagramsParser ( Parser ):
                 self.state = 258
                 self.match(SeqDiagramsParser.LPAREN)
                 self.state = 259
-                self.match(SeqDiagramsParser.STRING)
+                self.match(SeqDiagramsParser.IDENTIFIER)
                 self.state = 260
                 self.match(SeqDiagramsParser.RPAREN)
                 self.state = 261
@@ -2033,7 +2189,7 @@ class SeqDiagramsParser ( Parser ):
                 self.state = 270
                 self.match(SeqDiagramsParser.LPAREN)
                 self.state = 271
-                self.match(SeqDiagramsParser.STRING)
+                self.match(SeqDiagramsParser.IDENTIFIER)
                 self.state = 272
                 self.match(SeqDiagramsParser.RPAREN)
                 self.state = 273
@@ -2097,6 +2253,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitConditional" ):
                 listener.exitConditional(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitConditional" ):
+                return visitor.visitConditional(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2147,8 +2309,8 @@ class SeqDiagramsParser ( Parser ):
         def LPAREN(self):
             return self.getToken(SeqDiagramsParser.LPAREN, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def RPAREN(self):
             return self.getToken(SeqDiagramsParser.RPAREN, 0)
@@ -2177,6 +2339,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitAltCase" ):
                 listener.exitAltCase(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAltCase" ):
+                return visitor.visitAltCase(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2192,7 +2360,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 293
             self.match(SeqDiagramsParser.LPAREN)
             self.state = 294
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 295
             self.match(SeqDiagramsParser.RPAREN)
             self.state = 296
@@ -2231,8 +2399,8 @@ class SeqDiagramsParser ( Parser ):
         def LPAREN(self):
             return self.getToken(SeqDiagramsParser.LPAREN, 0)
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def RPAREN(self):
             return self.getToken(SeqDiagramsParser.RPAREN, 0)
@@ -2261,6 +2429,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitOptional" ):
                 listener.exitOptional(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOptional" ):
+                return visitor.visitOptional(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2276,7 +2450,7 @@ class SeqDiagramsParser ( Parser ):
             self.state = 306
             self.match(SeqDiagramsParser.LPAREN)
             self.state = 307
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 308
             self.match(SeqDiagramsParser.RPAREN)
             self.state = 309
@@ -2335,6 +2509,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitParallel" ):
                 listener.exitParallel(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitParallel" ):
+                return visitor.visitParallel(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2397,6 +2577,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitLifecycle" ):
                 listener.exitLifecycle(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitLifecycle" ):
+                return visitor.visitLifecycle(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2437,8 +2623,8 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def NEW(self):
             return self.getToken(SeqDiagramsParser.NEW, 0)
@@ -2457,6 +2643,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitNewObject" ):
                 listener.exitNewObject(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNewObject" ):
+                return visitor.visitNewObject(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2467,7 +2659,7 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 332
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 333
             self.match(SeqDiagramsParser.NEW)
             self.state = 334
@@ -2488,8 +2680,8 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def DELETE(self):
             return self.getToken(SeqDiagramsParser.DELETE, 0)
@@ -2508,6 +2700,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitDeleteObject" ):
                 listener.exitDeleteObject(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDeleteObject" ):
+                return visitor.visitDeleteObject(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2518,7 +2716,7 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 336
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 337
             self.match(SeqDiagramsParser.DELETE)
             self.state = 338
@@ -2539,8 +2737,8 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def ACTIVATE(self):
             return self.getToken(SeqDiagramsParser.ACTIVATE, 0)
@@ -2559,6 +2757,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitActivation" ):
                 listener.exitActivation(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitActivation" ):
+                return visitor.visitActivation(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2569,7 +2773,7 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 340
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 341
             self.match(SeqDiagramsParser.ACTIVATE)
             self.state = 342
@@ -2590,8 +2794,8 @@ class SeqDiagramsParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING(self):
-            return self.getToken(SeqDiagramsParser.STRING, 0)
+        def IDENTIFIER(self):
+            return self.getToken(SeqDiagramsParser.IDENTIFIER, 0)
 
         def DEACTIVATE(self):
             return self.getToken(SeqDiagramsParser.DEACTIVATE, 0)
@@ -2610,6 +2814,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitDeactivation" ):
                 listener.exitDeactivation(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDeactivation" ):
+                return visitor.visitDeactivation(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2620,7 +2830,7 @@ class SeqDiagramsParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 344
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 345
             self.match(SeqDiagramsParser.DEACTIVATE)
             self.state = 346
@@ -2647,11 +2857,11 @@ class SeqDiagramsParser ( Parser ):
         def LPAREN(self):
             return self.getToken(SeqDiagramsParser.LPAREN, 0)
 
-        def STRING(self, i:int=None):
+        def IDENTIFIER(self, i:int=None):
             if i is None:
-                return self.getTokens(SeqDiagramsParser.STRING)
+                return self.getTokens(SeqDiagramsParser.IDENTIFIER)
             else:
-                return self.getToken(SeqDiagramsParser.STRING, i)
+                return self.getToken(SeqDiagramsParser.IDENTIFIER, i)
 
         def RPAREN(self):
             return self.getToken(SeqDiagramsParser.RPAREN, 0)
@@ -2673,6 +2883,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitNote" ):
                 listener.exitNote(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNote" ):
+                return visitor.visitNote(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2687,13 +2903,13 @@ class SeqDiagramsParser ( Parser ):
             self.state = 349
             self.match(SeqDiagramsParser.LPAREN)
             self.state = 350
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 351
             self.match(SeqDiagramsParser.RPAREN)
             self.state = 352
             self.match(SeqDiagramsParser.COLON)
             self.state = 353
-            self.match(SeqDiagramsParser.STRING)
+            self.match(SeqDiagramsParser.IDENTIFIER)
             self.state = 354
             self.match(SeqDiagramsParser.SEMI)
         except RecognitionException as re:
@@ -2725,6 +2941,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitStereotype" ):
                 listener.exitStereotype(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitStereotype" ):
+                return visitor.visitStereotype(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2767,6 +2989,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitSynchronousStereo" ):
                 listener.exitSynchronousStereo(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitSynchronousStereo" ):
+                return visitor.visitSynchronousStereo(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2807,6 +3035,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitReturnStereo" ):
                 listener.exitReturnStereo(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitReturnStereo" ):
+                return visitor.visitReturnStereo(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2849,6 +3083,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitXsynchronousStereo" ):
                 listener.exitXsynchronousStereo(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitXsynchronousStereo" ):
+                return visitor.visitXsynchronousStereo(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2889,6 +3129,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTwoWayAsyncStereo" ):
                 listener.exitTwoWayAsyncStereo(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTwoWayAsyncStereo" ):
+                return visitor.visitTwoWayAsyncStereo(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -2931,6 +3177,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitTimeoutStereo" ):
                 listener.exitTimeoutStereo(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTimeoutStereo" ):
+                return visitor.visitTimeoutStereo(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -2972,6 +3224,12 @@ class SeqDiagramsParser ( Parser ):
             if hasattr( listener, "exitBulkingStereo" ):
                 listener.exitBulkingStereo(self)
 
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitBulkingStereo" ):
+                return visitor.visitBulkingStereo(self)
+            else:
+                return visitor.visitChildren(self)
+
 
 
 
@@ -3012,6 +3270,12 @@ class SeqDiagramsParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAsynchronousStereo" ):
                 listener.exitAsynchronousStereo(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAsynchronousStereo" ):
+                return visitor.visitAsynchronousStereo(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
